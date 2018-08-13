@@ -35,8 +35,8 @@ class Dealer(object):
         self.dealt_cards.append(card)
         return card
         
-    def tmp(self):
-        return self.cards
+    def prepare(self):
+        self.__init__()
 
 
 if __name__ == '__main__':

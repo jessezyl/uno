@@ -74,6 +74,17 @@ class Player(object):
         except ValueError:
             return None
 
+    def get_score(self):
+        for card in self.cards:
+            if self.is_number(card.rank):
+                self.score += self.is_number(card.rank)
+            elif card.color == 'Black':
+                self.score += 50
+            else:
+                self.score += 20
+        return self.score
+
+
 
 class HumanPlayer(Player):
     

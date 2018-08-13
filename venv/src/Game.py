@@ -15,10 +15,12 @@ from colorama import Fore
 class Game(object):
     
     def __init__(self):
-        self.players = deque([HumanPlayer('Me')])
+        self.players = deque([HumanPlayer('ME')])
+        self.score = dict({'ME': 0})
         self.dealer = Dealer()
 
     def play(self):
+        self.dealer.prepare()
         if len(self.players) > 1:
             self.pick_banker()
             self.deal_cards()
@@ -35,7 +37,7 @@ class Game(object):
                     is_end = True
                     print Fore.RED + 'Game over, winner is ' + self.players[-1].name + '!!!!!' + Fore.RESET
 
-            self.score()
+            self.calc_score()
         else:
             print 'add some player'
 
@@ -47,8 +49,9 @@ class Game(object):
             
     def add_player(self):
         if len(self.players) <= 10:
-            player_name = raw_input('player name:')
+            player_name = raw_input('请起名:')
             self.players.append(Player(player_name))
+            self.score.update({player_name: 0})
         else:
             print 'only 2-10 players'
 
@@ -90,8 +93,11 @@ class Game(object):
         shuffle(self.players)
         print '庄家:' + self.players[0].name
 
-    def score(self):
-        pass
+    def calc_score(self):
+        for player in self.players:
+            self.score[self.players[-1].name] += player.get_score()
+
+        print self.score
     
     @staticmethod
     def exit():
