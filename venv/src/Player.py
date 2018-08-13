@@ -11,7 +11,7 @@ from colorama import Fore, Back
 class Player(object):
     name = ''
     score = 0
-    is_uno = False
+    # is_uno = False
 
     def __init__(self, name=''):
         self.name = name
@@ -49,13 +49,13 @@ class Player(object):
 
     def draw(self, card):
         self.cards.append(card)
-        self.is_uno = False
+        # self.is_uno = False
         
     def played_cards(self):
         return self.played_cards
         
     def check_is_uno(self):
-        if not bool(len(self.cards)-1): print Fore.RED + '%s用尽力气大喊: UNO!!!!' % self.name + Fore.RESET
+        if not bool(len(self.cards)-1): print Fore.RED + '%s用尽力气大喊: UNOOOOOOOOOOOOOOOOO!!!!' % self.name + Fore.RESET
         # self.is_uno = bool(len(self.cards)-1)
         # print ['%s called: UNO!' % self.name, ''][self.is_uno]
     

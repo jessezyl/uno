@@ -26,7 +26,7 @@ class Dealer(object):
             dealt_card = self.cards.pop()
             return dealt_card
         else:
-            self.cards += self.dealt_cards
+            self.cards.append(self.dealt_cards)
             self.dealt_cards = []
             self.shuffle()
             self.deal()
@@ -37,6 +37,7 @@ class Dealer(object):
         
     def prepare(self):
         self.__init__()
+        self.dealt_cards = []
 
 
 if __name__ == '__main__':

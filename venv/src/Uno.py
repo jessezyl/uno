@@ -22,14 +22,14 @@ class Card(uno_card):
         _ = '%s,%s' % self
         prop = _.split(',')
         color_map = {
-            'Red': Back.RED,
-            'Green': Back.GREEN,
-            'Blue': Back.BLUE,
-            'Yellow': Back.YELLOW,
-            'Black': Back.BLACK,
-            'Reset': Back.RESET
+            'red': Back.RED,
+            'green': Back.GREEN,
+            'blue': Back.BLUE,
+            'yellow': Back.YELLOW,
+            'black': Back.BLACK,
+            'reset': Back.RESET
         }
-        return color_map[prop[0]] + ' ' + prop[1] + ' ' + color_map['Reset']
+        return color_map[prop[0].lower()] + ' ' + prop[1] + ' ' + color_map['reset']
 
 
 class Uno(object):

@@ -9,25 +9,27 @@ from Game import Game
 
 
 def main_ui():
-    print '1-add player'
-    print '2-start game'
-    print '3-show score'
-    print '4-exit game'
+    print '\n'
+    print '1-添加电脑'
+    print '2-开始游戏'
+    print '3-分数'
+    print '4-退出'
     # todo: read player input
-    player_input = raw_input('choose one option:')
+    player_input = raw_input('请选择:')
     if player_input not in '1234':
-        player_input = raw_input('input again:')
+        player_input = raw_input('选错了，再选:')
     return player_input
 
 
 def end_ui():
-    print '1-continue'
-    print '2-add player'
-    print '3-clear & return main'
-    print '4-exit'
-    player_input = raw_input('choose one option:')
+    print '\n'
+    print '1-继续'
+    print '2-添加电脑'
+    print '3-回菜单'
+    print '4-退出'
+    player_input = raw_input('请选择:')
     if player_input not in '1234':
-        player_input = raw_input('input again:')
+        player_input = raw_input('选错了，再选:')
     return player_input
 
 

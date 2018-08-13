@@ -25,8 +25,9 @@ class Game(object):
             self.pick_banker()
             self.deal_cards()
             start_card = self.dealer.dealt(self.dealer.deal())
+            print '首张牌：', start_card
             while start_card.rank == 'wild_draw' or start_card.rank == 'wild':
-                print 'start card is {}, '.format(start_card.rank) + 'try again.'
+                print '重新抽:', start_card
                 start_card = self.dealer.dealt(self.dealer.deal())
                 
             last_card = start_card   
@@ -64,12 +65,12 @@ class Game(object):
             self.players.reverse()
             self.players.rotate(-1)
         elif last_card.rank == 'draw':
-            print Fore.RED + 'DRAW!!下家' + self.players[0].name + '罚牌两张！！' + Fore.RESET
+            print Fore.RED + 'DRAW!!下家' + self.players[0].name + '咆哮着抽了两张牌！！' + Fore.RESET
             for i in range(2):
                 self.players[0].draw(self.dealer.deal())
             self.players.rotate(-1)
         elif last_card.rank == 'wild_draw':
-            print Fore.RED + 'WILD DRAW!!!下家' + self.players[0].name + '罚牌四张！！' + Fore.RESET
+            print Fore.RED + 'WILD DRAW!!!下家' + self.players[0].name + '跪在地上双手颤抖着抽了四张牌！！' + Fore.RESET
             for i in range(4):
                 self.players[0].draw(self.dealer.deal())
             self.players.rotate(-1)
@@ -91,13 +92,14 @@ class Game(object):
         
     def pick_banker(self):
         shuffle(self.players)
-        print '庄家:' + self.players[0].name
+        print '\n庄家:' + self.players[0].name
 
     def calc_score(self):
         for player in self.players:
             self.score[self.players[-1].name] += player.get_score()
+            player.cards = []
 
-        print self.score
+        print Fore.CYAN, '总分:', self.score, Fore.RESET
     
     @staticmethod
     def exit():
