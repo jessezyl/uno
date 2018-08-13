@@ -25,7 +25,7 @@ def end_ui():
     print '2-add player'
     print '3-clear & return main'
     print '4-exit'
-    player_input = raw_input('choose one option')
+    player_input = raw_input('choose one option:')
     if player_input not in '1234':
         player_input = raw_input('input again:')
     return player_input

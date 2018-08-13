@@ -7,11 +7,29 @@
 
 
 import collections
+from colorama import init, Fore, Back, Style
+#init(autoreset=True)
+uno_card = collections.namedtuple('Card', ['color', 'rank'])
 
 
-class UnoCard(collections.namedtuple):
+class Card(uno_card):
+
+    def __new__(cls, color, rank):
+        self = super(Card, cls).__new__(cls, color, rank)
+        return self
+
     def __repr__(self):
-        return
+        _ = '%s,%s' % self
+        prop = _.split(',')
+        color_map = {
+            'Red': Back.RED,
+            'Green': Back.GREEN,
+            'Blue': Back.BLUE,
+            'Yellow': Back.YELLOW,
+            'Black': Back.BLACK,
+            'Reset': Back.RESET
+        }
+        return color_map[prop[0]] + ' ' + prop[1] + ' ' + color_map['Reset']
 
 
 class Uno(object):
@@ -19,7 +37,8 @@ class Uno(object):
     rank = [str(n) for n in range(1, 10)] + "skip draw reverse".split()
     
     def __init__(self):
-        Card = collections.namedtuple('Card', ['color', 'rank'])
+        # Card = collections.namedtuple('Card', ['color', 'rank'])
+        # Card = UnoCard('Card', ['color', 'rank'])
         self._cards = [Card(c, r) for c in self.color
                        for r in self.rank] * 2
         self._cards += [Card(c, '0') for c in self.color]
@@ -48,6 +67,5 @@ if __name__ == '__main__':
     uno = Uno()
     print len(uno)
     print uno[-1]
-    new = uno[-1]._replace(color='Puple')
-    print new
     print uno
+    #c = UnoCard('Card', ['color', 'rank'])

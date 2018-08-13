@@ -8,7 +8,8 @@
 from Player import Player,HumanPlayer
 from Dealer import Dealer
 from collections import deque
-from random import shuffle 
+from random import shuffle
+from colorama import Fore
 
 
 class Game(object):
@@ -32,14 +33,14 @@ class Game(object):
                 new_card, last_card = self.next_player(last_card)
                 if self.players[-1].check_cards_num() == 0:
                     is_end = True
-                    print 'game over, winner is', self.players[-1].name
+                    print Fore.RED + 'Game over, winner is ' + self.players[-1].name + '!!!!!' + Fore.RESET
 
             self.score()
         else:
             print 'add some player'
 
     def deal_cards(self):
-        print 'deal cards'
+        print '开始发牌'
         while len(self.dealer.cards) > 108-len(self.players)*7:
             for player in self.players:
                 player.draw(self.dealer.deal())
@@ -53,25 +54,33 @@ class Game(object):
 
     def next_player(self, last_card):
         if last_card.rank == 'skip':
+            print Fore.RED + '跳过', self.players[0].name + Fore.RESET
             self.players.rotate(-1)
         elif last_card.rank == 'reverse':
+            print Fore.RED + '反转出牌顺序' + Fore.RESET
             self.players.reverse()
             self.players.rotate(-1)
         elif last_card.rank == 'draw':
+            print Fore.RED + 'DRAW!!下家' + self.players[0].name + '罚牌两张！！' + Fore.RESET
             for i in range(2):
                 self.players[0].draw(self.dealer.deal())
             self.players.rotate(-1)
         elif last_card.rank == 'wild_draw':
+            print Fore.RED + 'WILD DRAW!!!下家' + self.players[0].name + '罚牌四张！！' + Fore.RESET
             for i in range(4):
                 self.players[0].draw(self.dealer.deal())
             self.players.rotate(-1)
         new_card, call_card = self.players[0].play_card(self.dealer.dealt_cards, last_card)
         
         while not new_card:
+            print Fore.RED + self.players[0].name + '选择pass,抽一张牌。' + Fore.RESET
             self.players[0].draw(self.dealer.deal())
             new_card, call_card = self.players[0].play_card(self.dealer.dealt_cards, last_card)
 
-        print self.players[0].name + ' played: ', new_card
+        print self.players[0].name + '出牌: ', new_card
+        if new_card.color != call_card.color:
+            print self.players[0].name + '选择了颜色:', call_card
+        self.players[0].check_is_uno()
         self.dealer.dealt(new_card)
         self.players.rotate(-1)
             
@@ -79,7 +88,7 @@ class Game(object):
         
     def pick_banker(self):
         shuffle(self.players)
-        print 'banker is: ' + self.players[0].name
+        print '庄家:' + self.players[0].name
 
     def score(self):
         pass

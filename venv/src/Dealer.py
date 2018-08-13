@@ -24,7 +24,6 @@ class Dealer(object):
     def deal(self):
         if len(self.cards) != 0:
             dealt_card = self.cards.pop()
-            #self.dealt_cards.append(dealt_card)
             return dealt_card
         else:
             self.cards += self.dealt_cards
@@ -46,7 +45,4 @@ if __name__ == '__main__':
     dealer.shuffle()
     print dealer.tmp()
     print dealer.deal()
-    print dealer.dealt()
-    print dealer.deal()
-    print dealer.dealt()
 

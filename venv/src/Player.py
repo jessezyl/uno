@@ -5,6 +5,8 @@
 # @Date  : 2018/8/2
 # @Desc  :
 
+from colorama import Fore, Back
+
 
 class Player(object):
     name = ''
@@ -43,7 +45,6 @@ class Player(object):
             new_card = max(can_play_color_cards, key=lambda x: self.is_number(x.rank))
             call_card = new_card
         self.cards.remove(new_card)
-        self.check_is_uno()
         return new_card, call_card
 
     def draw(self, card):
@@ -53,29 +54,10 @@ class Player(object):
     def played_cards(self):
         return self.played_cards
         
-    def sort_cards(self):
-        for card in self.cards:
-            if card.color == 'Red':
-                if card.rank in '0123456789':
-                    self.red_num_cards.append(card)
-                else:
-                    self.red_action_cards.append(card)
-            elif card.color == 'Green':
-                if card.rank in '0123456789':
-                    self.green_num_cards.append(card)
-                else:
-                    self.green_action_cards.append(card)
-            elif card.color == 'Blue':
-                if card.rank in '0123456789':
-                    self.blue_num_cards.append(card)
-                else:
-                    self.blue_action_cards.append(card)
-            elif card.color == 'Black':
-                self.black_cards.append(card)
-    
     def check_is_uno(self):
-        self.is_uno = bool(len(self.cards)-1)
-        print ['UNO!', ''][self.is_uno]
+        if not bool(len(self.cards)-1): print Fore.RED + '%s用尽力气大喊: UNO!!!!' % self.name + Fore.RESET
+        # self.is_uno = bool(len(self.cards)-1)
+        # print ['%s called: UNO!' % self.name, ''][self.is_uno]
     
     def check_cards_num(self):
         return len(self.cards)
@@ -99,36 +81,35 @@ class HumanPlayer(Player):
         Player.__init__(self, name)
     
     def play_card(self, dealt_cards, last_call_card):
-        print 'cards played:', dealt_cards
-        print 'you should follow this card to play:', last_call_card
-        print 'your cards in hand, choose one to play:'
+        print '\n已出过的牌:', dealt_cards
+        print '上家出牌:', last_call_card
+        print '你手上的牌:',
         for i, card in enumerate(self.cards):
             print '{}-{}'.format(i, card),
         print '{}-pass'.format(i+1)
 
         while True:
-            card_idx = self.is_number(raw_input(self.name + '-play your card:'))
+            card_idx = self.is_number(raw_input('到你了，请出牌:'))
             if 0 <= card_idx < len(self.cards):
                 if self.card_is_match(self.cards[card_idx], last_call_card):
                     played_card = self.cards[card_idx]
                     call_card = played_card
                     if played_card.color == 'Black':
-                        color = ('Red', 'Green', 'Blue', 'Yellow')
+                        color = ('RED', 'GREEN', 'BLUE', 'YELLOW')
                         for i, element in enumerate(color):
-                            print '{}-{}, '.format(i, element)
-                        idx = self.is_number(raw_input('choose color you call:'))
+                            print getattr(Back, element) + ' {} '.format(i) + Back.RESET
+                        idx = self.is_number(raw_input('选择你的颜色:'))
                         while not (0 <= idx <= 4):
-                            idx = raw_input('wrong choice!choose your color:')
+                            idx = raw_input('选错了！！重新选择:')
                         call_card = call_card._replace(color=color[idx])
                     self.cards.remove(played_card)
-                    self.check_is_uno()
                     return played_card, call_card
                 else:
-                    print 'play wrong card!',
+                    print '出错牌了!',
             elif card_idx == len(self.cards):
                 return None, last_call_card
             else:
-                print 'wrong input!',
+                print '出错牌了!',
 
 
 
