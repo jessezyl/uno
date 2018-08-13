@@ -26,10 +26,10 @@ class Dealer(object):
             dealt_card = self.cards.pop()
             return dealt_card
         else:
-            self.cards.append(self.dealt_cards)
+            self.cards += self.dealt_cards
             self.dealt_cards = []
             self.shuffle()
-            self.deal()
+            return self.deal()
 
     def dealt(self, card):
         self.dealt_cards.append(card)

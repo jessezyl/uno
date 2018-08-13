@@ -59,6 +59,12 @@ class Uno(object):
     def __setitem__(self, key, value):
         self._cards[key] = value
     
+    def __add__(self, cards):
+	return self._cards + cards
+
+    def append(self, card):
+	return self._cards.append(card)
+
     def pop(self):
         return self._cards.pop(0)
     
