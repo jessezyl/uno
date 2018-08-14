@@ -7,12 +7,10 @@
 
 
 import collections
-from colorama import init, Fore, Back, Style
-#init(autoreset=True)
-uno_card = collections.namedtuple('Card', ['color', 'rank'])
+from colorama import Back
 
 
-class Card(uno_card):
+class Card(collections.namedtuple('Card', ['color', 'rank'])):
 
     def __new__(cls, color, rank):
         self = super(Card, cls).__new__(cls, color, rank)
@@ -21,15 +19,7 @@ class Card(uno_card):
     def __repr__(self):
         _ = '%s,%s' % self
         prop = _.split(',')
-        color_map = {
-            'red': Back.RED,
-            'green': Back.GREEN,
-            'blue': Back.BLUE,
-            'yellow': Back.YELLOW,
-            'black': Back.BLACK,
-            'reset': Back.RESET
-        }
-        return color_map[prop[0].lower()] + ' ' + prop[1] + ' ' + color_map['reset']
+        return getattr(Back, prop[0].upper()) + ' ' + prop[1] + ' ' + Back.RESET
 
 
 class Uno(object):
@@ -37,8 +27,6 @@ class Uno(object):
     rank = [str(n) for n in range(1, 10)] + "skip draw reverse".split()
     
     def __init__(self):
-        # Card = collections.namedtuple('Card', ['color', 'rank'])
-        # Card = UnoCard('Card', ['color', 'rank'])
         self._cards = [Card(c, r) for c in self.color
                        for r in self.rank] * 2
         self._cards += [Card(c, '0') for c in self.color]
@@ -60,14 +48,14 @@ class Uno(object):
         self._cards[key] = value
     
     def __add__(self, cards):
-	return self._cards + cards
+        return self._cards + cards
 
     def append(self, card):
-	return self._cards.append(card)
+        return self._cards.append(card)
 
     def pop(self):
         return self._cards.pop(0)
-    
+
 
 if __name__ == '__main__':
     uno = Uno()

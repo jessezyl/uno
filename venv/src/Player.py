@@ -6,12 +6,12 @@
 # @Desc  :
 
 from colorama import Fore, Back
+from collections import Counter
 
 
 class Player(object):
     name = ''
     score = 0
-    # is_uno = False
 
     def __init__(self, name=''):
         self.name = name
@@ -22,26 +22,16 @@ class Player(object):
         if len(can_play_cards) == 0:
             return None, last_call_card
 
-        can_play_cards_count = (
-            (len([c for c in can_play_cards if c.color == 'Red']), 'Red'),
-            (len([c for c in can_play_cards if c.color == 'Green']), 'Green'),
-            (len([c for c in can_play_cards if c.color == 'Blue']), 'Blue'),
-            (len([c for c in can_play_cards if c.color == 'Yellow']), 'Yellow')
-        )
-        can_play_max = max(can_play_cards_count)
-        
-        if can_play_max[0] == 0:
-            cards_color_count = (
-                (len([c for c in self.cards if c.color == 'Red']), 'Red'),
-                (len([c for c in self.cards if c.color == 'Green']), 'Green'),
-                (len([c for c in self.cards if c.color == 'Blue']), 'Blue'),
-                (len([c for c in self.cards if c.color == 'Yellow']), 'Yellow')
-            )
-            max_color = max(cards_color_count)[1]
+        can_play_cards_count = Counter([c.color for c in can_play_cards if c.color != 'Black'])
+
+        if not can_play_cards_count:
+            cards_color_count = Counter([c.color for c in self.cards if c.color != 'Black'])
+            max_color = max(cards_color_count)
             new_card = can_play_cards[0]
             call_card = can_play_cards[0]._replace(color=max_color)
         else:
-            can_play_color_cards = [c for c in can_play_cards if c.color == can_play_max[1]]
+            can_play_max_color = max(can_play_cards_count)
+            can_play_color_cards = [c for c in can_play_cards if c.color == can_play_max_color]
             new_card = max(can_play_color_cards, key=lambda x: self.is_number(x.rank))
             call_card = new_card
         self.cards.remove(new_card)
@@ -49,16 +39,13 @@ class Player(object):
 
     def draw(self, card):
         self.cards.append(card)
-        # self.is_uno = False
-        
+
     def played_cards(self):
         return self.played_cards
         
     def check_is_uno(self):
         if not bool(len(self.cards)-1): print Fore.RED + '%s用尽力气大喊: UNOOOOOOOOOOOOOOOOO!!!!' % self.name + Fore.RESET
-        # self.is_uno = bool(len(self.cards)-1)
-        # print ['%s called: UNO!' % self.name, ''][self.is_uno]
-    
+
     def check_cards_num(self):
         return len(self.cards)
     
@@ -83,7 +70,6 @@ class Player(object):
             else:
                 self.score += 20
         return self.score
-
 
 
 class HumanPlayer(Player):
